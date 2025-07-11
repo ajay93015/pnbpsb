@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
@@ -6,6 +6,21 @@ const qrcode = require('qrcode');
 const session = require('express-session');
 
 const app = express();
+*/
+import express from 'express';
+import sqlite3pkg from 'sqlite3';
+const sqlite3 = sqlite3pkg.verbose();
+import ejs from 'ejs';
+import bodyParser from 'body-parser';
+import qrcode from 'qrcode';
+import session from 'express-session';
+import { Octokit } from '@octokit/rest';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const port = 3000;
 
 
@@ -19,7 +34,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
-const { Octokit } = require("@octokit/rest");
+//const { Octokit } = require("@octokit/rest");
 
 
 /*
