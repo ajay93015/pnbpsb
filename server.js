@@ -22,11 +22,11 @@ app.use(session({
 const { Octokit } = require("@octokit/rest");
 
 
-
+/*
 const octokit = new Octokit({
-  auth: "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",
+  auth: "noth",
 });
-
+*/
 const owner = "ajay93015";
 const repo = "mysite";
 const path = "data.json";
@@ -194,86 +194,40 @@ db.all(`SELECT * FROM acopen WHERE username = ?`,[req.session.userId],(err, rows
 }
 })
 
-app.post('/process', (req, res) => {
+
+app.post('/process',(req,res)=>{
+  //var ajay = req.session.userId;
+  //console.log(ajay);
+  //( ajay != 7354199144)?res.redirect('/logout');
+
   const data = req.body;
-  const accountNumber = data.account_number;
+  const accountNumber = req.body.account_number;
+    db.get(`SELECT * FROM acopen WHERE account_number = ?`, [accountNumber], (err, rows) => {
+      if (rows === undefined) {
 
-  db.get(`SELECT * FROM acopen WHERE account_number = ?`, [accountNumber], (err, rows) => {
-    if (!rows) {
-      // INSERT to SQLite
-      db.run(`
-        INSERT INTO acopen (username, acopen, gender, relationship_name, full_address, full_address2, City, full_name, cif_number, account_number, adhar_number) 
+  db.run(`INSERT INTO acopen (username,acopen,gender, relationship_name, full_address, full_address2, City, full_name, cif_number, account_number, adhar_number) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          req.session.userId,
-          data.acopen,
-          data.gender,
-          data.relationship_name,
-          data.full_address,
-          data.full_address2,
-          data.City,
-          data.full_name,
-          data.cif_number,
-          data.account_number,
-          data.adhar_number
-        ],
-        async function(err) {
-          if (err) return console.log(err.message);
-
-          // ✅ Save backup to GitHub JSON
-          try {
-            let sha = null;
-            let existingData = {};
-
-            // Try to fetch existing data.json
-            try {
-              const file = await octokit.repos.getContent({
-                owner,
-                repo,
-                path,
-                ref: branch
-              });
-
-              sha = file.data.sha;
-              const decoded = Buffer.from(file.data.content, 'base64').toString();
-              existingData = JSON.parse(decoded);
-            } catch (error) {
-              //console.log("data.json not found — will create new.");
-            }
-
-            // Merge with new record
-            existingData[accountNumber] = data;
-
-            const newContent = Buffer.from(JSON.stringify(existingData, null, 2)).toString('base64');
-
-            // Create or update file on GitHub
-            await octokit.repos.createOrUpdateFileContents({
-              owner,
-              repo,
-              path,
-              message: `backup: ${accountNumber}`,
-              content: newContent,
-              sha: sha || undefined,
-              branch
-            });
-
-           // console.log(`✅ GitHub backup for ${accountNumber} saved.`);
-          } catch (err) {
-            console.error("❌ GitHub backup failed:", err.message);
+        [req.session.userId,data.acopen,data.gender, data.relationship_name, data.full_address, data.full_address2, data.City, data.full_name, data.cif_number, data.account_number, data.adhar_number],
+        function(err) {
+          if (err) {
+            return console.log(err.message);
           }
+          //console.log(`A row has been inserted with rowid ${this.lastID}`);
+        });
 
-          // Render response
-          res.render('process', {
-            data: req.body,
-            user: req.session.userId
-          });
-        }
-      );
-    } else {
-      res.redirect(`/passbook/${accountNumber}`);
-    }
+  res.render('process',{
+    data:req.body,
+    user:req.session.userId
   });
-});
+
+}else{
+
+res.redirect(`/passbook/${req.body.account_number}`)
+}
+
+})
+
+})
 
 app.post('/passbook',(req,res)=>{
  if(req.session.userId == undefined){
@@ -310,6 +264,7 @@ app.get('/passbook/:accountNumber', (req, res) => {
 }
 })
 })
+
 
 app.get('/update/:accountNumber', (req, res) => {
     const accountNumber = req.params.accountNumber;
@@ -573,7 +528,7 @@ app.post("/aadhar",(req,res)=>{
     })
 })
 
-
+/*
 async function syncGitHubToSQLite() {
   try {
     const { data } = await octokit.repos.getContent({
@@ -623,6 +578,7 @@ async function syncGitHubToSQLite() {
     console.error("❌ Error syncing from GitHub:", err.message);
   }
 }
+*/
 app.use((req,res)=>{
     const text = 'upi://pay?pa=9301751642@ibl&pn=Ajay%20Vishwakarma&am=200';
 
@@ -643,7 +599,4 @@ const options = {
 //const delay = 40 * 60 * 1000; // 40 minutes in milliseconds
 
 
-app.listen(port,()=>{
-    syncGitHubToSQLite();
-   } 
-);
+app.listen(process.env.PORT || port);
