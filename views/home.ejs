@@ -1,0 +1,1248 @@
+<%-include('header')-%>
+   <div id="customAlert" style="display:none;">
+  <div id="alertContent">
+    <b><span id="alertMessage"></span></br></b>
+    <button id="alertCloseBtn">OK</button>
+  </div>
+</div>
+<style>
+   #customAlert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  display: block;
+  justify-content: center;
+  align-items: center;
+     z-index:9999;
+}
+
+#alertContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  width: 300px;
+}
+
+#alertCloseBtn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+</style>
+
+<script>
+const motivationalQuotes = [
+"तुम जितना सोच सकते हो, उससे कहीं ज्यादा मजबूत हो।",
+"अगर आप हार नहीं मानते, तो आप असफल नहीं होते।",
+"कठिनाइयों के बिना सफलता नहीं मिलती।",
+"आप वही बनते हैं जो आप सोचते हैं।",
+"हर दिन एक नई शुरुआत है, इसे बेहतरीन बनाओ।",
+"हर नई किताब एक नई दुनिया खोलती है।",
+"सपने सच होते हैं, जब हम उन्हें पाने की कोशिश करते हैं।",
+"सच्ची दोस्ती और ज्ञान, दोनों का मूल्य समझो।",
+"हर प्रश्न का उत्तर ढूंढने का प्रयास करो।",
+"कभी भी अपने ज्ञान की यात्रा खत्म मत करो।",
+"एक अच्छा शिक्षक, एक अच्छे भविष्य की नींव है।",
+"सकारात्मक सोच से जीवन आसान हो जाता है।",
+"हर कठिनाई एक नई सीख देती है।",
+"तुम्हारी कल्पना की कोई सीमा नहीं है।",
+"हर गलती हमें बेहतर बनाती है।",
+"ज्ञान का दीप जलाते रहो।",
+"अपने सपनों को सच करने के लिए मेहनत करो।",
+"हर दिन एक नई शुरुआत है।",
+"छोटे कदम बड़े बदलाव लाते हैं।",
+"सपने देखने का कोई उम्र नहीं होती।",
+"खुद पर विश्वास रखो, तुम खास हो।",
+"तुम्हारी मेहनत तुम्हें सफलता दिलाएगी।",
+"सीखने में कभी देर नहीं होती।",
+"एक सकारात्मक सोच से सब कुछ संभव है।",
+"हर दिन कुछ नया सीखने का प्रयास करो।",
+"अपने आप पर विश्वास करो, तुम महान बन सकते हो।",
+"हर दिन कुछ अलग करने की कोशिश करो।",
+"सपनों के पीछे भागो, और सच में उन्हें जीओ।",
+"जीवन की किताब को पढ़ने का आनंद लो।",
+"सच्चा ज्ञान वही है जो दूसरों के साथ बांटते हो।",
+"हर बार जब तुम गिरते हो, तुम उठने के लिए और मजबूत बनते हो।",
+"सफलता की सीढ़ी पर हर कदम महत्वपूर्ण होता है।",
+"जीवन में छोटी खुशियों का आनंद लो।",
+"हर बच्चा विशेष है, अपनी अनोखी पहचान पहचानो।",
+"शिक्षा तुम्हें नई ऊँचाइयों तक पहुंचाएगी।",
+"अपनी जिज्ञासा को जगाए रखो।",
+"हर दिन को एक नए अवसर की तरह देखो।",
+"असफलता से डरने के बजाय उससे सीखो।",
+"शिक्षा एक चाबी है, जो हर दरवाज़ा खोल सकती है।",
+"तुम्हारी सोच तुम्हारी पहचान बनाती है।",
+"सपने वो नहीं जो सोते वक्त आते हैं, बल्कि वो हैं जो हमें मेहनत करने पर मजबूर करते हैं।",
+"हर चीज़ में एक सीख होती है।",
+"खुद को हमेशा बेहतर बनाने का प्रयास करो।",
+"एक कदम बढ़ाने से शुरुआत होती है।",
+"सपने देखने का अधिकार सबको है।",
+"सच्ची मेहनत का फल मीठा होता है।",
+"हर सीखने का मौका अनमोल है।",
+"तुम्हारी मेहनत तुम्हें चमकाएगी।",
+"समय की कीमत समझो, इसका सही उपयोग करो।",
+"सकारात्मकता से जीवन में खुशियाँ बढ़ती हैं।",
+"तुम अपने सपनों के लिए खुद जिम्मेदार हो।",
+"हर दिन एक नई संभावना है।",
+"छोटी सफलताएँ भी बड़ी होती हैं।",
+"अपनी सोच को ऊँचा उठाओ, और दुनिया को बदलो।",
+"खुद पर भरोसा रखो, तुम कुछ भी कर सकते हो।",
+"हर नई सीख तुम्हें और मजबूत बनाती है।",
+"कभी हार मत मानो, तुम महान हो।",
+"सपनों का पीछा करो, और उन्हें हकीकत बनाओ।",
+"हर दिन एक नई उम्मीद लेकर आता है।",
+"जीवन में खुश रहना सीखो।",
+"अपनी मेहनत पर विश्वास करो।",
+"हर बच्चे में एक विशेषता होती है।",
+"ज्ञान का कोई अंत नहीं होता।",
+"सीखने का आनंद लो, यह तुम्हारा साथी है।",
+"तुम्हारी यात्रा की शुरुआत आज से होती है।",
+"हर किताब एक नई कहानी कहती है।",
+"सपने वो होते हैं जो तुम अपने प्रयासों से पूरा करते हो।",
+"असफलता तुम्हें और मजबूत बनाएगी।",
+"एक नए विचार से जीवन बदल सकता है।",
+"हर दिन कुछ नया करने का प्रयास करो।",
+"तुम्हारे सपने तुम्हारी मेहनत के परिणाम हैं।",
+"सीखने की यात्रा कभी खत्म नहीं होती।",
+"एक अच्छे विचार से बड़ी सफलताएँ आती हैं।",
+"खुद पर विश्वास रखो, तुम अद्भुत हो।",
+"तुम्हारी मेहनत का फल मीठा होता है।",
+"जीवन में सीखना एक अनवरत प्रक्रिया है।",
+"छोटे लक्ष्य बनाओ, और उन्हें पाने की खुशी मनाओ।",
+"हर अनुभव एक नया सबक होता है।",
+"सकारात्मक सोच से सभी बाधाएँ पार हो जाती हैं।",
+"तुम्हारी यात्रा महत्वपूर्ण है, इसका आनंद लो।",
+"हर चीज़ में एक सुंदरता होती है।",
+"अपने सपनों को जीने का प्रयास करो।",
+"खुद को दूसरों से तुलना मत करो, तुम अद्वितीय हो।",
+"हर दिन एक नई कहानी है, इसे लिखो।",
+"शिक्षा सबसे बड़ा हथियार है।",
+"हर बच्चा एक प्रतिभा है।",
+"अपनी कोशिशें कभी मत छोड़ो।",
+"सपनों को पूरा करने का मज़ा लो।",
+"कभी भी सीखना बंद मत करो।",
+"सपने वो होते हैं जो हमें जागते वक्त मेहनत करने पर मजबूर करते हैं।",
+"तुम्हारे प्रयासों का कोई मोल नहीं है।",
+"ज्ञान सबसे बड़ा धन है।",
+"सच्चा मित्र वही है जो आपको सीखने के लिए प्रेरित करता है।",
+"सपने देखने से शुरुआत होती है।",
+"हर छोटी चीज़ का महत्व है।",
+"हर दिन का एक नया सबक होता है।",
+"अपने लक्ष्यों को स्पष्ट करो।",
+"खुद को प्रेरित करना तुम्हारी जिम्मेदारी है।",
+"हर समस्या का समाधान होता है।",
+"कभी भी खुद पर शक मत करो।",
+"एक नई सीख तुम्हें और ज्ञानवान बनाती है।",
+"हर चीज़ में सकारात्मकता खोजो।",
+"सपने वो होते हैं जो तुम्हें जागते वक्त उत्साहित करते हैं।",
+"तुम्हारी मेहनत तुम्हारी पहचान बनाती है।",
+"सीखने की यात्रा का आनंद लो।",
+"हर नए दिन की नई संभावनाएं होती हैं।",
+"सपने सच होते हैं, जब हम मेहनत करते हैं।",
+"सीखने का आनंद उठाओ, यह सबसे बड़ा उपहार है।",
+"हर कठिनाई एक नया अवसर लेकर आती है।",
+"अपनी यात्रा का आनंद लो, यह तुम्हारी कहानी है।",
+"ज्ञान की खोज कभी खत्म नहीं होती।",
+"तुम्हारी छोटी-छोटी सफलताएँ बड़ी होती हैं।",
+"हर गलती तुम्हें बेहतर बनाती है।",
+"सपनों का पीछा करने का साहस रखो।",
+"हर दिन कुछ नया सीखने का संकल्प करो।",
+"खुद को चुनौती दो, तुम अविश्वसनीय हो।",
+"हर दिन को एक नई कहानी के रूप में जीओ।",
+"एक सकारात्मक सोच से बड़ी-बड़ी दीवारें गिर जाती हैं।",
+"सीखने का सफर कभी खत्म नहीं होता।",
+"तुम्हारे सपने तुम्हारी मेहनत से साकार होते हैं।",
+"हर सीख तुम्हारे भविष्य को उज्ज्वल बनाती है।",
+"अपनी कल्पना को उड़ान दो, कोई सीमा नहीं है।",
+"सपने वो होते हैं जो तुम्हें उत्साहित करते हैं।",
+"अपने ज्ञान को दूसरों के साथ साझा करो।",
+"हर दिन एक नया मौका है खुद को साबित करने का।",
+"शिक्षा तुम्हारी सबसे बड़ी ताकत है।",
+"सफलता की राह पर मेहनत सबसे महत्वपूर्ण है।",
+"अपनी गलतियों से मत डरना, उनसे सीखो।",
+"हर दिन एक नई चुनौती का सामना करो।",
+"सपनों के लिए मेहनत करो, वो तुम्हारे हैं।",
+"खुद पर विश्वास रखो, तुम महानता के लिए बने हो।",
+"हर किताब एक नया दोस्त है।",
+"सीखना कभी बंद मत करो, यह तुम्हारा अधिकार है।",
+"सपनों को पूरा करने का सफर ही सबसे रोमांचक होता है।",
+"तुम्हारी सोच तुम्हारे जीवन को आकार देती है।",
+"सपने तुम्हारी मेहनत से साकार होते हैं।",
+"एक नए विचार से जीवन में बदलाव आ सकता है।",
+"हर सवाल का उत्तर खोजने का प्रयास करो।",
+"सकारात्मकता से तुम्हारी दुनिया बदल सकती है।",
+"हर दिन की छोटी-छोटी सफलताएँ महत्वपूर्ण होती हैं।",
+"तुम्हारी मेहनत का फल मीठा होता है।",
+"अपने सपनों के लिए खड़े रहो।",
+"हर गलती एक नया सबक सिखाती है।",
+"कभी भी खुद पर संदेह मत करो।",
+"अपने लक्ष्यों को पूरा करने का उत्साह रखो।",
+"सपने देखना जरूरी है, पर उन्हें पूरा करना और भी जरूरी है।",
+"खुद को बेहतर बनाने का प्रयास करो।",
+"हर किताब तुम्हें एक नई सीख देती है।",
+"सकारात्मक सोच से सभी बाधाएँ पार होती हैं।",
+"हर अनुभव तुम्हें नया ज्ञान देता है।",
+"अपने विचारों को सकारात्मक बनाओ।",
+"हर समस्या का समाधान तुम्हारे हाथ में है।",
+"सीखने की जिज्ञासा कभी खत्म मत करो।",
+"सपनों के लिए मेहनत करो, सफलता खुद तुम्हारे पास आएगी।",
+"एक नई सीख तुम्हारे लिए एक नया अवसर है।",
+"खुद को प्रेरित रखना तुम्हारी जिम्मेदारी है।",
+"हर सीख तुम्हें मजबूत बनाती है।",
+"सपने वो होते हैं जो तुम्हें जागते वक्त उत्साहित करते हैं।",
+"हर बच्चा एक अद्भुत कहानी है।",
+"अपने लक्ष्यों के प्रति सच्चे रहो।",
+"हर प्रयास तुम्हें नयी दिशा में ले जाता है।",
+"सच्चे दोस्त तुम्हें सीखने के लिए प्रेरित करते हैं।",
+"खुद को समझने का प्रयास करो, तुम अनमोल हो।",
+"तुम्हारी मेहनत तुम्हारी पहचान बनाती है।",
+"जीवन में खुश रहना सबसे महत्वपूर्ण है।",
+"सीखने के लिए हर दिन एक नया अवसर है।",
+"सपनों के बिना जीवन अधूरा है।",
+"तुम्हारी मेहनत ही तुम्हारा सबसे बड़ा मित्र है।",
+"हर किताब में एक नई दुनिया होती है।",
+"अपने विचारों को व्यक्त करो, वे महत्वपूर्ण हैं।",
+"सपने देखने का कोई उम्र नहीं होती।",
+"हर दिन एक नया सबक सिखाता है।",
+"अपने आप पर विश्वास करो, तुम अद्भुत हो।",
+"सपनों को पूरा करने के लिए मेहनत करो।",
+"हर नया अनुभव तुम्हारे ज्ञान को बढ़ाता है।",
+"अपने लक्ष्यों के प्रति सजग रहो।",
+"सपने वो होते हैं जो तुम्हें जागते वक्त प्रेरित करते हैं।",
+"सच्चा ज्ञान वही है जो हमें दूसरों के साथ बांटना आता है।",
+"हर किताब से कुछ नया सीखो।",
+"तुम्हारी सोच तुम्हारी सफलता की कुंजी है।",
+"सपनों की ओर कदम बढ़ाते रहो।",
+"खुद को चुनौती देने से तुम और मजबूत बनते हो।",
+"हर गलती एक नया सबक सिखाती है।",
+"अपनी मेहनत पर भरोसा रखो।",
+"सपने तुम्हारी मेहनत से ही सच होंगे।",
+"हर दिन की छोटी-छोटी सफलताएँ एक दिन बड़ी बन जाएंगी।",
+"सकारात्मक सोच से जीवन में बदलाव आ सकता है।",
+"तुम्हारी सोच ही तुम्हारी पहचान बनाती है।",
+"सपने सच होते हैं, जब हम उन्हें पाने के लिए प्रयास करते हैं।",
+"खुद को समझने का प्रयास करो, तुम खास हो।",
+"हर दिन एक नया सबक है, इसे सीखो।",
+"सपनों की ओर बढ़ते रहो, कभी मत रुको।",
+"सीखने का सफर मजेदार होता है।",
+"तुम्हारी मेहनत का फल मीठा होता है।",
+"हर दिन कुछ नया सीखने का प्रयास करो।",
+"सपनों का पीछा करने में कभी शर्म मत करो।",
+"अपने लक्ष्यों के प्रति सच्चे रहो।",
+"हर किताब में एक नई कहानी होती है।",
+"सच्चा ज्ञान वही है जो हम दूसरों के साथ बांटते हैं।",
+"तुम्हारी मेहनत तुम्हें सफल बनाएगी।",
+"हर नई सीख तुम्हें और ज्ञानवान बनाती है।",
+"खुद पर विश्वास रखो, तुम कुछ भी कर सकते हो।",
+"सपने देखने का कोई उम्र नहीं होती।",
+"हर गलती एक नया सबक देती है।",
+"सपनों को पूरा करने के लिए मेहनत करो।",
+"हर नया दिन नई उम्मीदें लेकर आता है।",
+"सीखने की जिज्ञासा को कभी न खोना।",
+"सपनों के लिए मेहनत करने का साहस रखो।",
+"हर समस्या एक अवसर होती है।",
+"तुम्हारी मेहनत से तुम्हारी पहचान बनती है।",
+"ज्ञान का दीप जलाए रखो, यह तुम्हारा मार्गदर्शक है।",
+"हर गलती से कुछ नया सीखो।",
+"सपनों को सच करने की शुरुआत आज से करो।",
+"अपनी सोच को सकारात्मक बनाओ।",
+"हर किताब तुम्हें एक नई सीख देती है।",
+"खुद पर विश्वास रखो, तुम कर सकते हो।",
+"सपनों की ओर कदम बढ़ाते रहो।",
+"सच्चा दोस्त वही है जो तुम्हें प्रेरित करता है।",
+"हर अनुभव एक नया सबक है।",
+"सपनों को पूरा करने में समय लग सकता है, लेकिन मेहनत जरूरी है।",
+"खुद को चुनौती देना सीखो।",
+"सीखने की यात्रा में कभी रुको मत।",
+"हर दिन कुछ नया सीखने का संकल्प करो।",
+"सपने तुम्हारे हैं, उन्हें पूरा करने का साहस रखो।",
+"अपनी मेहनत का फल मीठा होता है।",
+"हर किताब में अनगिनत कहानियाँ होती हैं।",
+"सकारात्मकता से जीवन में खुशियाँ बढ़ती हैं।",
+"तुम्हारी सोच तुम्हारी पहचान बनाती है।",
+"सपनों को पूरा करने के लिए मेहनत करो।",
+"हर गलती से सीखना सबसे महत्वपूर्ण है।",
+"अपने लक्ष्यों को स्पष्ट करो।",
+"सीखने का आनंद लो, यह तुम्हारा साथी है।",
+"हर दिन एक नई संभावना है।",
+"सपने वो होते हैं जो तुम्हें जागते वक्त उत्साहित करते हैं।",
+"तुम्हारी मेहनत ही तुम्हारी सबसे बड़ी ताकत है।",
+"जीवन में खुश रहना सबसे महत्वपूर्ण है।",
+"हर दिन की छोटी-छोटी सफलताएँ भी महत्वपूर्ण होती हैं।",
+"अपनी सोच को ऊँचा उठाओ, और दुनिया को बदलो।",
+"सपनों की ओर कदम बढ़ाने में कभी संकोच मत करो।",
+"खुद को सकारात्मक सोच से प्रेरित करो।",
+"हर अनुभव तुम्हें नया ज्ञान देता है।",
+"सपने देखने का कोई उम्र नहीं होती।",
+"हर किताब एक नया मित्र है।",
+"सीखने की प्रक्रिया कभी खत्म नहीं होती।",
+"सच्चा ज्ञान वही है जो हम दूसरों के साथ बांटते हैं।",
+"अपनी गलतियों से सीखना तुम्हारी सफलता का राज है।",
+"हर समस्या एक नया अवसर है।",
+"खुद पर विश्वास रखो, तुम अद्भुत हो।",
+"सपनों की ओर बढ़ते रहो, कभी मत रुको।",
+"तुम्हारी मेहनत तुम्हें सफलता दिलाएगी।",
+"सीखना एक अनंत यात्रा है।",
+"हर दिन कुछ नया सीखने का प्रयास करो।",
+"सपनों को पूरा करने का सफर सबसे रोमांचक होता है।",
+"अपने आप को चुनौती देने से तुम और मजबूत बनते हो।",
+"हर गलती एक नया सबक देती है।",
+"सपनों को सच करने का साहस रखो।",
+"अपनी क्षमता पर विश्वास रखो, तुम कर सकते हो।",
+"हर किताब तुम्हें एक नई दुनिया में ले जाती है।",
+"सकारात्मक सोच से जीवन में खुशियाँ बढ़ती हैं।",
+"सपनों की ओर बढ़ने में कभी संकोच मत करो।",
+"जीवन में खुशी का राज सीखने में है।",
+"तुम्हारी मेहनत तुम्हें पहचान दिलाएगी।",
+"सीखने का सफर कभी खत्म नहीं होता।",
+"हर दिन एक नई शुरुआत है।",
+"सपने सच होते हैं, जब हम मेहनत करते हैं।",
+"खुद को प्रेरित रखना तुम्हारी जिम्मेदारी है।",
+"हर किताब में अनगिनत कहानियाँ होती हैं।",
+"सपनों को पूरा करने के लिए कभी हार मत मानो।",
+"सीखने का आनंद लो, यह सबसे बड़ा उपहार है।",
+"तुम्हारी सोच तुम्हारी पहचान बनाती है।",
+"हर गलती से कुछ नया सीखो।",
+"सपनों के लिए मेहनत करना जरूरी है।",
+"खुद को चुनौती देना सीखो।",
+"सीखने की यात्रा में कभी रुको मत।",
+"हर दिन कुछ नया सीखने का संकल्प करो।",
+"सपने तुम्हारे हैं, उन्हें पूरा करने का साहस रखो।",
+"अपनी मेहनत का फल मीठा होता है।",
+"हर किताब में अनगिनत कहानियाँ होती हैं।",
+"सकारात्मकता से जीवन में खुशियाँ बढ़ती हैं।",
+"तुम्हारी सोच तुम्हारी पहचान बनाती है।",
+"सपनों को पूरा करने के लिए मेहनत करो।",
+"हर गलती से सीखना सबसे महत्वपूर्ण है।",
+"अपने लक्ष्यों को स्पष्ट करो।",
+"सीखने का आनंद लो, यह तुम्हारा साथी है।",
+"हर दिन एक नई संभावना है।",
+"सपने वो होते हैं जो तुम्हें जागते वक्त उत्साहित करते हैं।",
+"तुम्हारी मेहनत ही तुम्हारी सबसे बड़ी ताकत है।",
+"जीवन में खुश रहना सबसे महत्वपूर्ण है।",
+"हर दिन की छोटी-छोटी सफलताएँ भी महत्वपूर्ण होती हैं।",
+"अपनी सोच को ऊँचा उठाओ, और दुनिया को बदलो।",
+"सपनों की ओर कदम बढ़ाने में कभी संकोच मत करो।",
+"खुद को सकारात्मक सोच से प्रेरित करो।",
+"हर अनुभव तुम्हें नया ज्ञान देता है।",
+"सपने देखने का कोई उम्र नहीं होती।",
+"हर किताब एक नया मित्र है।",
+"सीखने की प्रक्रिया कभी खत्म नहीं होती।",
+"सच्चा ज्ञान वही है जो हम दूसरों के साथ बांटते हैं।",
+"अपनी गलतियों से सीखना तुम्हारी सफलता का राज है।",
+"हर समस्या एक नया अवसर है।",
+"खुद पर विश्वास रखो, तुम अद्भुत हो।",
+"सपनों की ओर बढ़ते रहो, कभी मत रुको।",
+"तुम्हारी मेहनत तुम्हें सफलता दिलाएगी।",
+"सीखना एक अनंत यात्रा है।",
+"हर दिन कुछ नया सीखने का प्रयास करो।",
+"सपनों को पूरा करने का सफर सबसे रोमांचक होता है।",
+"हर दिन एक नया सबक सिखाता है।",
+"सपनों की ओर बढ़ते रहो, कभी मत रुको।",
+"अपनी मेहनत पर विश्वास रखो।",
+"हर किताब एक नई दुनिया में प्रवेश कराती है।",
+"सीखने की यात्रा में कभी भी रुकावट मत आने दो।",
+"सपनों को सच करने के लिए मेहनत करो।",
+"तुम्हारी सोच तुम्हारी सफलता का आधार है।",
+"हर दिन का एक नया अवसर है।",
+"खुद पर विश्वास रखो, तुम अनमोल हो।",
+"सपनों की ओर बढ़ते रहो, कभी संकोच मत करो।",
+"हर गलती एक नया सबक है।",
+"सीखने का आनंद लो, यह सबसे बड़ा उपहार है।",
+"अपनी सोच को सकारात्मक बनाओ।",
+"सपनों को पूरा करने के लिए मेहनत करनी होती है।",
+"हर अनुभव तुम्हें कुछ नया सिखाता है।",
+"तुम्हारी मेहनत ही तुम्हारी पहचान है।",
+"हर दिन कुछ नया सीखने का संकल्प करो।",
+"सपने सच होते हैं, जब हम उन्हें पाने की कोशिश करते हैं।",
+"खुद को चुनौती देने से तुम और मजबूत बनते हो।",
+"सच्चा ज्ञान वही है जो हम दूसरों के साथ बांटते हैं।",
+"हर किताब एक नई कहानी है।",
+"अपनी गलतियों से सीखो और आगे बढ़ो।",
+"हर समस्या एक नया अवसर हो सकती है।",
+"तुम्हारी मेहनत तुम्हें सफलता दिलाएगी।",
+"सीखने की जिज्ञासा को कभी न खोना।",
+"सपनों को सच करने का साहस रखो।",
+"हर दिन एक नई शुरुआत है।",
+"सकारात्मक सोच से जीवन में खुशियाँ आती हैं।",
+"खुद पर विश्वास रखो, तुम कर सकते हो।",
+"हर किताब तुम्हें एक नया मित्र देती है।",
+"सपनों के लिए मेहनत करना जरूरी है।",
+"तुम्हारी सोच तुम्हारी पहचान बनाती है।",
+"हर गलती से सीखना सबसे महत्वपूर्ण है।",
+"अपने लक्ष्यों को स्पष्ट करो और उन्हें हासिल करने की कोशिश करो।",
+"सीखने का आनंद लो, यह तुम्हारा साथी है।",
+"हर दिन एक नई संभावना है।",
+"सपने वो होते हैं जो तुम्हें जागते वक्त उत्साहित करते हैं।",
+"तुम्हारी मेहनत ही तुम्हारी सबसे बड़ी ताकत है।",
+"जीवन में खुश रहना सबसे महत्वपूर्ण है।",
+"हर दिन की छोटी-छोटी सफलताएँ भी महत्वपूर्ण होती हैं।",
+"अपनी सोच को ऊँचा उठाओ, और दुनिया को बदलो।",
+"सपनों की ओर कदम बढ़ाने में कभी संकोच मत करो।",
+"खुद को सकारात्मक सोच से प्रेरित करो।",
+"हर अनुभव तुम्हें नया ज्ञान देता है।",
+"सपने देखने का कोई उम्र नहीं होती।",
+"हर किताब एक नया मित्र है।",
+"सीखने की प्रक्रिया कभी खत्म नहीं होती।",
+"सच्चा ज्ञान वही है जो हम दूसरों के साथ बांटते हैं।",
+"अपनी गलतियों से सीखना तुम्हारी सफलता का राज है।",
+"हर समस्या एक नया अवसर है।",
+"खुद पर विश्वास रखो, तुम अद्भुत हो।",
+"सपनों की ओर बढ़ते रहो, कभी मत रुको।",
+"तुम्हारी मेहनत तुम्हें सफलता दिलाएगी।",
+"सीखना एक अनंत यात्रा है।",
+"हर दिन कुछ नया सीखने का प्रयास करो।",
+"सपनों को पूरा करने का सफर सबसे रोमांचक होता है।",
+"अपने आप को चुनौती देने से तुम और मजबूत बनते हो।",
+"हर गलती एक नया सबक देती है।",
+"सपनों को सच करने का साहस रखो।",
+"अपनी क्षमता पर विश्वास रखो, तुम कर सकते हो।",
+"हर किताब तुम्हें एक नई दुनिया में ले जाती है।",
+"सकारात्मकता से जीवन में खुशियाँ बढ़ती हैं।",
+"सपनों की ओर बढ़ने में कभी संकोच मत करो।",
+"जीवन में खुशी का राज सीखने में है।",
+"तुम्हारी मेहनत तुम्हें पहचान दिलाएगी।",
+"सीखने का सफर कभी खत्म नहीं होता।",
+"हर दिन एक नई शुरुआत है।",
+"सपने सच होते हैं, जब हम मेहनत करते हैं।",
+"खुद को प्रेरित रखना तुम्हारी जिम्मेदारी है।",
+"हर किताब में अनगिनत कहानियाँ होती हैं।",
+"सपनों को पूरा करने के लिए कभी हार मत मानो।",
+"सीखने का आनंद लो, यह सबसे बड़ा उपहार है।",
+"तुम्हारी सोच तुम्हारी पहचान बनाती है।",
+"हर गलती से कुछ नया सीखो।",
+"सपनों के लिए मेहनत करना जरूरी है।",
+"खुद को चुनौती देना सीखो।",
+"सीखने की यात्रा में कभी रुको मत।",
+"हर दिन कुछ नया सीखने का संकल्प करो।",
+"सपने तुम्हारे हैं, उन्हें पूरा करने का साहस रखो।",
+"अपनी मेहनत का फल मीठा होता है।",
+"हर किताब में अनगिनत कहानियाँ होती हैं।",
+"सकारात्मकता से जीवन में खुशियाँ बढ़ती हैं।",
+"तुम्हारी सोच तुम्हारी पहचान बनाती है।",
+"सपनों को पूरा करने के लिए मेहनत करो।",
+"हर गलती से सीखना सबसे महत्वपूर्ण है।",
+"अपने लक्ष्यों को स्पष्ट करो।",
+"सीखने का आनंद लो, यह तुम्हारा साथी है।",
+"हर दिन एक नई संभावना है।",
+"सपने वो होते हैं जो तुम्हें जागते वक्त उत्साहित करते हैं।",
+"तुम्हारी मेहनत ही तुम्हारी सबसे बड़ी ताकत है।",
+"जीवन में खुश रहना सबसे महत्वपूर्ण है।",
+"हर दिन की छोटी-छोटी सफलताएँ भी महत्वपूर्ण होती हैं।",
+"अपनी सोच को ऊँचा उठाओ, और दुनिया को बदलो।",
+"सपनों की ओर कदम बढ़ाने में कभी संकोच मत करो।",
+"खुद को सकारात्मक सोच से प्रेरित करो।",
+"हर अनुभव तुम्हें नया ज्ञान देता है।",
+"सपने देखने का कोई उम्र नहीं होती।",
+"हर किताब एक नया मित्र है।",
+"सीखने की प्रक्रिया कभी खत्म नहीं होती।",
+"सच्चा ज्ञान वही है जो हम दूसरों के साथ बांटते हैं।"
+];
+      
+// Function to display the custom alert with a motivational quote
+function showCustomAlert() {
+  const alertBox = document.getElementById('customAlert');
+  const alertMessage = document.getElementById('alertMessage');
+
+  // Get a random quote from the array
+  const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+  
+  alertMessage.textContent = randomQuote; // Set the quote in the alert box
+  alertBox.style.display = 'flex'; // Show the alert
+}
+
+// Close the alert on button click
+document.getElementById('alertCloseBtn').addEventListener('click', function() {
+  document.getElementById('customAlert').style.display = 'none'; // Hide the alert
+});
+
+// Automatically show the alert with a quote when the page loads
+window.onload = function() {
+  showCustomAlert();
+};
+  
+</script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --accent-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --dark-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --surface: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #7881ad, #4a618b, #0e1a25, #414a4b);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="%23ffffff" opacity="0.2"/><circle cx="10" cy="50" r="0.5" fill="%23ffffff" opacity="0.2"/><circle cx="90" cy="30" r="0.5" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(79, 172, 254, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(79, 172, 254, 0.8), 0 0 60px rgba(79, 172, 254, 0.3); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Header */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+          min-width:100vw;
+        }
+
+        .hero-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 4rem 3rem;
+            max-width: 800px;
+            animation: slideInUp 1s ease-out;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #4facfe 50%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 30px rgba(79, 172, 254, 0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            animation: float 2s ease-in-out infinite;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 4rem 2rem;
+            text-align: center;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        .contact-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 3rem;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2rem;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            background: var(--secondary-gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .contact-item:hover::before {
+            left: 100%;
+        }
+
+        .contact-item:hover {
+            transform: scale(1.05);
+            animation: glow 2s infinite;
+        }
+
+        /* Main Container */
+        .main-container {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .container-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+            min-height: 80vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+            animation: slideInLeft 1s ease-out 0.5s both;
+        }
+
+        .sidebar h2 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 15px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-gradient);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item a:hover::before {
+            left: 0;
+        }
+
+        .nav-item a:hover {
+            transform: translateX(10px);
+            color: white;
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            animation: slideInRight 1s ease-out 0.7s both;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--secondary-gradient);
+            border-radius: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 3rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--secondary-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .service-card h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .service-card .hindi-text {
+            font-style: italic;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            background: var(--secondary-gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.5);
+        }
+
+        /* Payment Card */
+        .payment-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .qr-placeholder {
+            background: var(--dark-gradient);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qr-placeholder::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(79, 172, 254, 0.3), transparent);
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .qr-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+            
+            .nav-menu {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-card {
+                padding: 2rem;
+            }
+            
+            .main-container {
+                padding: 2rem 1rem;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-gradient);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-gradient);
+        }
+    </style>
+</head>
+ <style>
+     
+
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+            background-size: 300% 300%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: gradientShift 3s ease infinite, slideOutLeft 0.5s ease-in-out 2s forwards;
+        }
+
+        .welcome-content {
+            text-align: center;
+            color: white;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .welcome-title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+          color:whitesmoke;
+        }
+
+        .welcome-message {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+    
+
+        @keyframes slideOutLeft {
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+      
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+            
+            .welcome-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .welcome-message {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+        
+        }
+    </style>
+
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-content">
+            <h1 class="welcome-title">Welcome</h1>
+            <p class="welcome-subtitle">Every sunshine brings a new opportunity to shine brighter than before ....</br>हर सूरज की रोशनी एक नए अवसर को लाती है, पहले से भी अधिक चमकने के लिए ....</p>
+            <p class="welcome-message">
+              Have A Good Day.. </br> Click anywhere to skip this page....</br> or wait 3 second....
+            </p>
+            
+        </div>
+    </div>
+
+
+    <script>
+        // Optional: Add any additional JavaScript functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const overlay = document.getElementById('welcomeOverlay');
+            
+            // Remove the overlay from DOM after animation completes
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 3000);
+        });
+
+        // Optional: Allow manual dismissal by clicking
+        document.getElementById('welcomeOverlay').addEventListener('click', function() {
+            this.style.animation = 'slideOutLeft 0.5s ease-in-out forwards';
+            setTimeout(() => {
+                this.style.display = 'none';
+            }, 500);
+        });
+    </script>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome 🙌</h1>
+            <p>EASY TO ADD AND PRINT PASSBOOK</p>
+            <div style="margin-top: 2rem; font-size: 1.1rem; color: rgba(255,255,255,0.8);">
+                ✨ OUR PROGRESS
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div style="font-size: 2rem;">↓</div>
+            <div>Scroll to explore</div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-card">
+            <h2 class="contact-title">🤝 Get In Touch</h2>
+            <div class="contact-info">
+                <a href="https://wa.me/+919301751642" class="contact-item">
+                    📱 WhatsApp: +91 9301751642
+                </a>
+                <a href="tel:+919301751642" class="contact-item">
+                    📞 Call: +91 9301751642
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="container-grid">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <h2>Navigation</h2>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#home">
+                            <span>🏠</span>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#add-passbook">
+                            <span>📖</span>
+                            <span>Add Passbook</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#search-passbook">
+                            <span>🔍</span>
+                            <span>Search Passbook</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#pricing">
+                            <span>💰</span>
+                            <span>Pricing</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <h1 class="section-title">Currently Only For PNB BANK BC's</h1>
+                
+                <div class="services-grid">
+                    <!-- Passbook Creation Card -->
+                    <div class="service-card">
+                        <span class="service-icon">📋</span>
+                        <h3>Passbook Creation</h3>
+                        <p>Create PNB Bank passbooks effortlessly using our advanced digital platform. Simply copy and paste the provided form into our secure textarea, or manually create your passbook with our intuitive interface.</p>
+                        <p class="hindi-text">आप हमारी वेबसाइट पर Copy किये गए फ़ॉर्म को दिए गए टेक्स्टएरिया में पेस्ट कर आसानी से पीएनबी बैंक की पासबुक बना सकते हैं। आप मैन्युअल भी पासबुक बना सकते हैं।</p>
+                        <a href="/login" class="cta-button">🚀 Start Creating</a>
+                    </div>
+                    
+                    <!-- Payment Card -->
+                    <div class="service-card payment-card">
+                        <span class="service-icon">💳</span>
+                        <h3>Pay Only What You Use</h3>
+                        <div class="qr-placeholder">
+                            <div class="qr-content">
+                                <div style="font-size: 4rem; margin-bottom: 1rem;"><img src="<%=url%>"></div>
+                                <p style="font-size: 1.2rem; margin: 0;">Scan QR Code to Pay</p>
+                                <p style="font-size: 1rem; opacity: 0.8; margin-top: 0.5rem;">Secure Payment Gateway</p>
+                            </div>
+                        </div>
+                        <p><strong>💎 Pay to increese more services.</strong></p>
+                        
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+<%-include('footer')-%>

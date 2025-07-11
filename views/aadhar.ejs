@@ -1,0 +1,236 @@
+
+<textarea id="customerData" placeholder="Paste Here copied data" rows="10" cols="50" oninput="extractCustomerDetails()" onchange="extractCustomerDetails()">
+</textarea>
+<br>
+<button onclick="extractCustomerDetails()">Extract Details</button>
+<pre id="output"></pre>
+<pre id="normalad" onchange='this.slipt(" ",",")'></pre>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div id="dropArea">
+    <p>Drag & Drop an image here or <label for="imageInput" class="upload-btn">Click to Upload</label></p>
+    <input type="file" id="imageInput" accept="image/*" hidden>
+</div>
+
+<textarea id="base64Output" rows="5" cols="50" placeholder="Base64 output will appear here"></textarea>
+
+<textarea name="adr">S/O: Harpal Kushwaha, 111, Karaundi kalan, Post kuwan, Barhi, Karaundi Kalan, Murwara, Katni, Madhya Pradesh-483770
+</textarea>
+
+<form action="/form1" method="post">
+    <button onclick="translateText()">Translate</button>
+  <input type="submit">
+<div style="display:flex;justify-content:center;flex-direction: column;flex-wrap: nowrap;align-items: center;">
+<input type="text" placeholder="l mark" id="lm" name="lm">
+<input type="text" placeholder="subdist" id="subdist" name="subdist">
+<input type="text" placeholder="postal code" id="pc" name="pc">
+<input type="text" placeholder="vtc" id="vtc" name="vtc">
+<input type="text" placeholder="street" id="street" name="street">
+<input type="text" placeholder="dist" id="dist" name="dist">
+<input type="text" placeholder="state" id="state" name="state">
+<input type="text" placeholder="co" id="co" name="co">
+<input type="text" placeholder="house" id="house" name="house">
+<input type="text" placeholder="po" id="po" name="po">
+
+<input type="imageurl" id="adimg" name="imgurl">
+<input type="text" id="uid" name="uid" oninput="fourdigit()"onload="fourdigit()" value="556569612170">
+<input type="text" name="gender" value="पुरुष/ MALE">
+<input type="text" name="hidob" value="जन्म तिथि/DOB:">
+<input type="text" id="englishText1" name="dob" value="11-08-2003">
+<input type="text" id="englishText2" name="name" value="Rahul Kushwaha">
+<textarea id="englishText3" name="adr">S/O: Harpal Kushwaha, 111, Karaundi kalan, Post kuwan, Barhi, Karaundi Kalan, Murwara, Katni, Madhya Pradesh-483770
+</textarea>
+
+</div>
+
+<label for="hindiText1">Hindi translation 1:</label><br>
+<textarea id="hindiText1" name="hindiText1" rows="5" cols="50"></textarea><br>
+
+<label for="hindiText2">Hindi translation 2:</label><br>
+<textarea id="hindiText2" name="hindiText2" rows="5" cols="50"></textarea><br>
+
+<label for="hindiText3">Hindi translation 3:</label><br>
+<textarea id="hindiText3" name="hindiText3" rows="5" cols="50"></textarea><br>
+
+</form>
+
+<br>
+<img id="previewImage" style="max-width: 100%; display: none; border: 1px solid #ddd; padding: 5px; margin-top: 10px;"/>
+
+<style>
+    #dropArea {
+        width: 300px;
+        height: 150px;
+        border: 2px dashed #ccc;
+        text-align: center;
+        
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    #dropArea.highlight {
+        border-color: #007bff;
+        background: #f8f9fa;
+    }
+    .upload-btn {
+        color: blue;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+</style>
+<script>
+
+extractCustomerDetails=()=> {
+    let text = document.getElementById("customerData").value;
+
+    let ts = {aadhaar: text.match(/Cust Aadhaar Number\/VID \* :\s*(\S+)/)?.[1] || "N/A",
+        name: text.match(/Customer Name\s*:\s*(.+)/)?.[1] || "",
+        dob: text.match(/Date of Birth\s*:\s*([\d-]+)/)?.[1] || "",
+        gender: text.match(/Gender\s*:\s*(\w)/)?.[1] || "",
+        careOf: text.match(/Care of\s*:\s*(.+)/)?.[1] || "",
+        houseNo: text.match(/House No\s*:\s*(.+)/)?.[1] || "",
+        street: text.match(/Street Name\s*:\s*(.+)/)?.[1] || "",
+        locality: text.match(/Locality\s*:\s*(.+)/)?.[1] || "",
+        vtc: text.match(/Vtc\s*:\s*(.+)/)?.[1] || "",
+        city: text.match(/District\/Town\/City\s*:\s*(.+)/)?.[1] || "",
+        postOffice: text.match(/Post Office\s*:\s*(.+)/)?.[1] || "",
+        subDistrict: text.match(/SubDistrict\* :\s*(.+)/)?.[1] || "",
+        state: text.match(/State\s*:\s*(.+)/)?.[1] || "",
+        PostCode: text.match(/PostCode\s*:\s*(.+)/)?.[1] || "",
+    };
+        
+    document.getElementById("output").innerHTML = ts.PostCode+" "+ts.name+" "+ts.dob+" "+ts.gender+" "+ts.careOf+" "+ts.houseNo+" "+ts.street+" "+ts.city+" "+ts.postOffice+" "+ts.subDistrict+" "+ts.state;
+    document.getElementById("normalad").innerHTML = ts.careOf+" "+ts.houseNo+" "+ts.street+" "+ts.locality+" "+ts.vtc+" "+ts.postOffice+" "+ts.city+" "+ts.state+" "+ts.PostCode;
+
+}
+
+
+///photo 
+$(document).ready(function () {
+    const dropArea = $('#dropArea');
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.on(eventName, function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    });
+
+    // Highlight drop area when a file is dragged over
+    dropArea.on('dragenter dragover', function () {
+        dropArea.addClass('highlight');
+    });
+
+    dropArea.on('dragleave drop', function () {
+        dropArea.removeClass('highlight');
+    });
+
+    // Handle file drop
+    dropArea.on('drop', function (event) {
+        const files = event.originalEvent.dataTransfer.files;
+        if (files.length > 0) {
+            handleFile(files[0]);
+        }
+    });
+
+    // Handle file selection via input
+    $('#imageInput').on('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            handleFile(file);
+        }
+    });
+
+    // Function to process file and convert to Base64
+    function handleFile(file) {
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const base64String = e.target.result;
+                $('#base64Output').val(base64String);
+                $('#previewImage').attr('src', base64String).show();
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            alert("Please upload a valid image file.");
+        }
+    }
+});
+
+</script>
+<script>
+    function translateText() {
+        translateSingleText("englishText1", "hindiText1");
+        translateSingleText("englishText2", "hindiText2");
+        translateSingleText("englishText3", "hindiText3");
+    }
+    
+    function translateSingleText(englishId, hindiId) {
+        var englishText = document.getElementById(englishId).value;
+        var xhr = new XMLHttpRequest();
+        
+        // Using Google Translate API endpoint for single translation
+        xhr.open("GET", `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=hi&dt=t&q=${encodeURIComponent(englishText)}`, true);
+        
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response && response[0] && response[0][0]) {
+                    document.getElementById(hindiId).value = response[0][0][0];  // Extracting translated text
+                } else {
+                    alert("Translation failed. Please try again later.");
+                }
+            }
+        };
+        xhr.send();
+    }
+    </script>
+    <script>
+        // Get the input element
+        const inputElement = document.getElementById('englishText1');
+          inputElement.value = inputElement.value.replace(/-/g, '/');
+        
+          const adhar_number = document.getElementById('uid');
+          adhar_number.value = adhar_number.value.replace(/X/g, '');
+          adhar_number.value = adhar_number.value.replace(/-/g, '');
+        
+        const uidInput = document.getElementById('uid');
+         let value = uidInput.value;
+        
+          // Remove all spaces from the current value
+          value = value.replace(/\s/g, '');
+        
+          // Insert a space after every fourth digit
+          value = value.replace(/(\d{4})/g, '$1 ');
+        
+          // Update the value of the input field
+          uidInput.value = value.trim();
+        
+           setTimeout(()=>{   
+                  translateText()},2000
+                 );
+           
+                 fourdigit =()=>{
+                    const adhar_number = document.getElementById('uid');
+          adhar_number.value = adhar_number.value.replace(/X/g, '');
+          adhar_number.value = adhar_number.value.replace(/-/g, '');
+        
+        const uidInput = document.getElementById('uid');
+         let value = uidInput.value;
+        
+          // Remove all spaces from the current value
+          value = value.replace(/\s/g, '');
+        
+          // Insert a space after every fourth digit
+          value = value.replace(/(\d{4})/g, '$1 ');
+        
+          // Update the value of the input field
+          uidInput.value = value.trim();
+                 }
+        </script>
+

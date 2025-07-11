@@ -1,0 +1,117 @@
+<%-include('header')-%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+ 
+      
+  var url = "https://127.0.0.1:11100/getDeviceInfo";
+
+         var xhr;
+			var ua = window.navigator.userAgent;
+			var msie = ua.indexOf("MSIE ");
+
+			if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer, return version number
+			{
+				//IE browser
+				xhr = new ActiveXObject("Microsoft.XMLHTTP");
+			} else {
+				//other browser
+				xhr = new XMLHttpRequest();
+			}
+        
+        //
+        xhr.open('DEVICEINFO', url, true);
+
+         xhr.onreadystatechange = function () {
+		// if(xhr.readyState == 1 && count == 0){
+		//	fakeCall();
+		//}
+		if (xhr.readyState == 4){
+            var status = xhr.status;
+
+            if (status == 200) {
+
+                //alert(xhr.responseText);
+				   		 
+	            //console.log(xhr.response);
+              var deviceInfo = $.parseXML(xhr.responseText.trim());
+              var $deviceInfo = $(deviceInfo);
+              var serialElement = $deviceInfo.find("DeviceInfo");
+
+                if (serialElement.length > 0) {
+                    // Try different attribute names if "srno" is not correct
+                     var serialId = $deviceInfo.find("Param[name='srno']").attr("value"); // Get the serial ID
+
+                        if (serialId) {
+                         // console.log(serialId);
+                          
+                            if(serialId === '2404I003801' || '2436I044529'){
+                                //alert('Serial:'+ serialId);
+                             
+                            }else{
+                              /*
+                              <%if(user != undefined){%>
+//alert('user');
+                         // window.location.href = '/device/login/'+<%=user%>+'/'+serialId;
+                                                  
+                                                  <%}else{%>
+                                                    //alert('serial');
+                         // window.location.href = '/device/login/'+serialId;
+                          <%}%>
+                            */
+                            }
+                        } else {
+                          alert('your fingerprint device is not connected');
+                        //window.location.href = 'https://google.com';
+                    }
+                }
+
+            } else 
+			{
+                
+	            console.log(xhr.response);
+
+            }
+			}
+
+        };
+
+	 xhr.send();
+xhr.onerror= function (){
+ // window.location.href = '/';
+  //data:image/png;base64,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
+}
+ 
+</script>
+ <h2 class="center-align">Login</h2>
+          <% if (typeof error !== 'undefined') { %>
+        <h4 class="red-text text-darken-2" style="text-align:center;"><%= error %></h4>
+
+    <% } %>
+    <div class="container">
+
+        <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+            <form class="col s12" action="/login" method="POST">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input class="validate" type="text" id="username" name="username" required>
+                        <label for="username">Username</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input class="validate" type="password" id="password" name="password" required>
+                        <label for="password">Password</label>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col s12">
+                        <button type="submit" class="btn btn-large waves-effect blue-grey lighten-2">Login</button>
+                    </div>
+                </div>
+              <strong>Note:</strong>If you don't have an account click <a href="/registration">Sign Up</a>.
+            </form>
+        </div>
+    </div>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<%-include('footer')-%>

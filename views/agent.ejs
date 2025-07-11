@@ -1,0 +1,26 @@
+<%-include("header")-%>
+  <!--
+<div class="container">
+  <label for="agentReload">Use : agent reload</label></br>
+<input type="text" id="agentReload" style="width: 600px;" value="location.reload(); window.location.href = 'https://bcportal.pnbfikiosk.co.in/kiosk/layout?_=102345612';" readonly></br>
+<button class="btn btn-outline-primary" onclick="copyText()">Copy</button>
+
+<script>
+  function copyText() {
+    var copyText = document.getElementById("agentReload");
+
+    var tempInput = document.createElement("input");
+    tempInput.value = copyText.value;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(tempInput.value);
+    document.body.removeChild(tempInput);
+
+    alert("Copied the text: " + copyText.value);
+  }
+</script>
+
+  </div> -->
+  
+  <%-include("footer")-%>

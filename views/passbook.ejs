@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=print.account_number%></title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #passbook {
+            background-image: url(https://cdn.glitch.global/a871eceb-d30a-4533-bb7e-d96382bb56cd/passbookbank.png);
+            background-size: cover; 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            margin: 0;
+            width: 210mm; 
+            height: 297mm; 
+        }
+
+        @media print {
+            nav{
+                display: none !important;
+            }
+            .bgradio {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bgradio">
+ <label class="bgradio btn"for="removeBgCheckbox">Remove/Add Background Image
+    <input type="checkbox"id="removeBgCheckbox" onchange="toggleBackgroundImage()">    </label><button onclick="window.print()" style=" background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+      border-radius: 10px;">Print</button> <button style="color:white;background-color:darkblue;padding:15px;border-radius:10px" onclick="window.location.href='https://pnbpsb.glitch.me/update/<%=print.account_number%>'">EDIT/UPDATE</button><button style="padding:15px;color:white; background-color:red;border-radius:10px"onclick="window.close()">Close</button></div>
+    <div id="passbook">
+
+    
+    <script>
+      window.print();
+        function toggleBackgroundImage() {
+            var passbook = document.getElementById("passbook");
+            var removeBgCheckbox = document.getElementById("removeBgCheckbox");
+            if (removeBgCheckbox.checked) {
+                passbook.style.backgroundImage = "none";
+            } else {
+                passbook.style.backgroundImage = "url(https://cdn.glitch.global/a871eceb-d30a-4533-bb7e-d96382bb56cd/passbookbank.png)";
+            }
+        }
+    </script>
+
+<pre style="font-family:new courier;margin-top:20px;margin-left:4.5%;font-size:15px;">        
+Each depositor is insured by DICGC upto a maximum Rs.5.00lac 
+subject to change from time to time (T&amp;C applicable)
+
+
+            BO: GAIRTALAI (DISTT.KATNI)
+    V&amp;PO GAIRTALAI, DISTT KATNI-483770 (PHN.07626-273-24)
+        
+   
+   
+        IFSC Code: PUNB0139100 
+        MICR Code: 483024503
+
+*Toll Free -18001802222/18001032222,Tolled- 0120490000,Email-care@pnb.co.in*
+    *Principal Nodal Officer:  Phn-01128044907*
+          Mode of Operation : SELF 
+          CIF Id: <%=print.cif_number%>
+          Account No: <%=print.account_number%> INR Aadhar XX<%=print.adhar_number%>
+          <%=print.gender%> <%=print.full_name.toUpperCase()%>
+          Account Open Date: <%=print.acopen%>
+          <%=print.relationship_name%>
+          <%=print.full_address%>
+          <%=print.full_address2%>
+
+          <%=print.City%>
+          Date of Issue: <%=print.acopen%>
+    </pre>
+
+
+
+
+
+
+
+
+
+
+
+
+

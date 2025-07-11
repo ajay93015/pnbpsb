@@ -1,0 +1,143 @@
+<%-include('header')-%>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background-image: linear-gradient(#f4f4f4,#c6fcff);
+    margin: 0;
+    padding: 0;
+   
+}
+
+.containerform {
+    display:block;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    margin-top:30px;
+    margin-bottom:30px;
+    justify-content:center;
+    height:100%;
+    margin-left:50px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, textarea {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+button {
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+    #amount{
+      writeable:none;
+    }
+  </style>
+<body>
+  
+  <div style="justify-content:center;display:flex;align-items:center;flex-wrap:wrap;height:100%;">
+     <div class="containerform" >
+       <img src="https://cdn.glitch.global/a871eceb-d30a-4533-bb7e-d96382bb56cd/passbookbank.png" style="width:100%;">
+       
+       <b>01. यदि पासबुक की संख्या 600 से कम है तो 1 पासबुक 6 रुपये की मिलेगी, 600 या इसके ऊपर 5 रुपये की मिलेगी।</br>02.CASH ON DELHVRY SERVICE IS AVAILABLE.</br>03.Delivery in 7days.</b>
+
+      
+    </div>
+    <div class="containerform " style="">
+        <h1>Passbook Order</h1>
+        <form id="passbookForm" src="" method="post">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="mobile">Mobile No:</label>
+            <input type="tel" id="mobile" name="mobile" required>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" required></textarea>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" step="1" required>
+
+            <label for="amount">Amount per Passbook:</label>
+            <input type="number" id="amount" name="amount" required>
+
+            <label for="total">Total Amount:</label>
+            <input type="number" id="total" name="total" readonly>
+            
+            <button id="submit" type="submit">Order</button>
+            <p id="error"></p>
+        </form>
+    </div>
+   
+  </div>
+    <script>
+      document.getElementById('quantity').addEventListener('input', function (event) {
+    const value = event.target.value;
+    // Remove any non-integer characters
+    const integerValue = value.replace(/[^0-9]/g, '');
+    // Update the input field with the cleaned integer value
+    event.target.value = integerValue;
+});
+
+document.getElementById('passbookForm').addEventListener('input', function () {
+    const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+    let amount = 6; // Default price per passbook
+ 
+      if (quantity < 99) {
+       document.getElementById('error').innerHTML = 'Plz Order Minimum 100.';
+      document.getElementById('submit').disabled = true;
+    }
+    if (quantity > 99) {
+       document.getElementById('error').innerHTML = '';
+      document.getElementById('submit').disabled = false;
+    }
+    if (quantity >= 600) {
+        amount = 5;
+    }
+
+    // Update the amount field
+    document.getElementById('amount').value = amount.toFixed(2);
+
+    // Calculate and update the total amount
+    const total = quantity * amount;
+    document.getElementById('total').value = total.toFixed(2);
+});
+</script>
+
+<%-include('footer')-%>

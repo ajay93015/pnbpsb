@@ -1,0 +1,697 @@
+<%-include('header')-%>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 5% auto;
+            padding: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            min-width: 360px;
+            max-width: 400px;
+            width: auto;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 250px;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.3);
+        }
+
+        .instructions {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 1rem;
+        }
+
+        .instructions h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .instructions ol {
+            padding-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .admin-panel {
+            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
+            color: white;
+        }
+
+        .admin-panel .card-header {
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .admin-panel .form-input {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .admin-panel .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .admin-panel .card-title {
+            color: white;
+        }
+
+        .admin-panel .form-label {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table th, .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .payment-section {
+            text-align: center;
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            color: #d69e2e;
+        }
+
+        .payment-section .card-title {
+            color: #d69e2e;
+        }
+
+        .qr-code {
+            background: white;
+            padding: 1rem;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 1rem 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .filtered-info {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #e8f5e8, #d4ebf2);
+            border-radius: 15px;
+            border-left: 4px solid #38a169;
+        }
+
+        .filtered-info.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-credentials {
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .fullscreen-admin {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            margin: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            overflow-y: auto;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                padding: 1rem;
+                margin: 2% auto;
+            }
+            
+            .card {
+                min-width: 300px;
+                max-width: 100%;
+                padding: 1.5rem;
+            }
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                PNB PBP 
+            </div>
+            <div style="color: white; font-size: 0.9rem;">
+                <i class="fas fa-calendar"></i>
+                <span id="currentDate"></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Admin Panel (Conditional Display) -->
+        <% if(user === '9301751642') { %>
+        <div class="card admin-panel">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h2 class="card-title">Admin Panel</h2>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">User Credentials</label>
+                <div class="user-credentials">
+                    <p>Username &nbsp;&nbsp;&nbsp; Password</p>
+                    <% ajusrall.forEach(user => { %>
+                        <p><%= user.username %> <%= user.password %></p>
+                    <% }) %>
+                </div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Paid</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% userpay.forEach(user => { %>
+                        <tr>
+                            <td><%= user.Quantity %></td>
+                            <td><%= user.Mobile_No %></td>
+                            <td><%= user.Address %></td>
+                            <td><%= user.Total_Amount %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+
+            <form action="/payee" method="post" style="margin-top: 1.5rem;">
+                <input type="hidden" name="mobile" value="<%= user %>">
+                <div class="form-group">
+                    <input type="text" class="form-input" name="Quantity" placeholder="UTR Number......" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Payment
+                </button>
+            </form>
+        </div>
+        <% } %>
+
+        <!-- Data Filter Section -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-filter"></i>
+                </div>
+                <h2 class="card-title">Pnb PBP</h2>
+            </div>
+
+            <form id="filterForm">
+                <div class="form-group">
+                    <label for="textInput" class="form-label">Paste here Copied Data of Form:</label>
+                    <textarea id="textInput" name="textInput" class="form-textarea" 
+                              placeholder="<%- include('demo') %>"></textarea>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="filterText()">
+                    <i class="fas fa-magic"></i> Filter
+                </button>
+            </form>
+
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> Instructions</h3>
+                <p><strong>आप यहाँ भी देख सकते हैं कि कॉपी कैसे करें। Ctrl+a बटन दबाएं, फिर Ctrl+C दबाएं और दिए गए टेक्स्टप्लेस पर जाएं और पेस्ट करने के लिए Ctrl+v दबाएं</strong></p>
+                <ol>
+                    <li><strong>Copy Full Page:</strong> Copy the entire content of the page you want to filter.</li>
+                    <li><strong>Paste Copied Data:</strong> Paste the copied data into the text area above.</li>
+                    <li><strong>Filter:</strong> Click the "Filter" button to initiate the filtering process.</li>
+                </ol>
+            </div>
+
+            <div id="filteredInfo" style="display:none;" class="filtered-info">
+                <h3><i class="fas fa-check-circle"></i> Filtered Information</h3>
+                <ul id="infoList"></ul>
+            </div>
+        </div>
+
+        <!-- Passbook Form -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2 class="card-title">Add Passbook To Print</h2>
+            </div>
+
+            <form action="/process" method="post" >
+                <div class="form-group">
+                    <label for="gender" class="form-label">Gender:</label>
+                    <select id="gender" style="display: block;" name="gender" class="form-select" required>
+                        <option>Select</option>
+                        <option value="MR">MR</option>
+                        <option value="MRS">MRS</option>
+                        <option value="MOHMD">MOHMD</option>
+                        <option value="SHRI">SHRI</option>
+                        <option value="SMT">SMT</option>
+                        <option value="KUMARI">KUMARI</option>
+                        <option value="MS">MS</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="date" class="form-label">A/C Open Date</label>
+                    <input type="text" class="form-input" oninput="dat()" name="acopen" id="date">
+                </div>
+
+                <div class="form-group">
+                    <label for="acprint" class="form-label">PBP Print Date</label>
+                    <input type="text" class="form-input" name="acprint" id="acprint" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="full_name" class="form-label">Full Name:</label>
+                    <input type="text" class="form-input" style="text-transform: uppercase;" 
+                           id="full_name" placeholder="CUST_NAME" name="full_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cif_number" class="form-label">CIF Number:</label>
+                    <input type="text" class="form-input" style="text-transform: uppercase;" 
+                           id="cif_number" placeholder="CUST_CIF" name="cif_number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="account_number" class="form-label">Account Number:</label>
+                    <input type="text" class="form-input" minlength="16" maxlength="16" placeholder="CUST_AC_NUMBER" 
+                           id="account_number" name="account_number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="adhar_number" class="form-label">Adhar Number Last Four Digit:</label>
+                    <input type="text" class="form-input" placeholder="EX. CUST_AADHAR 1234" 
+                           maxlength="4" id="adhar_number" name="adhar_number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="relationship_name" class="form-label">Father/Husband Name:</label>
+                    <input type="text" class="form-input" id="relationship_name" 
+                           placeholder="Ex. C/O: Divana Kol" name="relationship_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="full_address" class="form-label">Full address:</label>
+                    <input type="text" class="form-input" placeholder="Ex. 159,WARD No 13 BARHI, BARHI" 
+                           id="full_address" name="full_address" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Ex. BARHI, BARHI" 
+                           id="full_address2" name="full_address2" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="City" class="form-label">City,State,Pincode:</label>
+                    <input type="text" class="form-input" id="City" 
+                           value="KATNI, MADHYA PRADESH, 483770" 
+                           placeholder="KATNI, MADHYA PRADESH, 483770" name="City" required>
+                </div>
+
+                <ul id="infoList" style="display:none;"></ul>
+                  <button onclick="submit()" type="submit"class="btn btn-primary">
+            <i class="fas fa-print"></i> Add To Printing 
+        </button>
+            </form>
+        </div>
+
+        <!-- Payment Section -->
+        <% if(user === '871796912') { %>
+        <div class="card payment-section fullscreen-admin">
+        <% } else { %>
+        <div class="card payment-section">
+        <% } %>
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <h2 class="card-title">Pay Only What You Use</h2>
+            </div>
+            <div class="qr-code">
+                <img src="<%= url %>" alt="Payment QR Code" style="max-width: 200px; height: auto;">
+            </div>
+            <p><strong>Pay to increase more services.</strong></p>
+          
+            <button class="btn btn-primary">
+                <i class="fas fa-mobile-alt"></i> Pay Now
+            </button>
+        </div>
+    </div>
+
+    <div class="floating-action" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Create a new Date object for the current date
+        var currentDate = new Date();
+        
+        // Get the day, month, and year components
+        var day = currentDate.getDate();
+        var month = currentDate.getMonth() + 1; // Month is zero-based, so add 1
+        var year = currentDate.getFullYear();
+        
+        // Pad single-digit day and month with leading zeros if necessary
+        day = day < 10 ? '0' + day : day;
+        month = month < 10 ? '0' + month : month;
+        
+        // Format the date as "dd-mm-yyyy"
+        var formattedDate = day + '-' + month + '-' + year;
+        
+        // Set the value of the target element to the new date format
+        document.getElementById('date').value = formattedDate;
+        document.getElementById('acprint').value = formattedDate;
+        document.getElementById('currentDate').textContent = formattedDate;
+
+        function dat() {
+            var inputDate = document.getElementById('date').value;
+            var formattedDate = inputDate.replaceAll('-', '');
+
+            if (formattedDate.length >= 8) {
+                formattedDate = formattedDate.slice(0, 2) + '-' + 
+                                formattedDate.slice(2, 4) + '-' + 
+                                formattedDate.slice(4, 8);
+            }
+            
+            document.getElementById('date').value = formattedDate;
+        }
+
+        function filterText() {
+            const text = document.getElementById('textInput').value;
+            const keywords = ['Customer Name', 'Account No', 'Aadhaar No', 'Customer ID','Sex','Flat No./Bldg. Name','Date of Birth'];
+            const filteredInfo = {};
+
+            keywords.forEach(keyword => {
+                const regex = new RegExp(`${keyword}\\s+(.*?)(?=(?:\\n|\\r|$))`, 'i');
+                const match = text.match(regex);
+                if (match) {
+                    filteredInfo[keyword] = match[1].trim();
+                }
+            });
+
+            const infoList = document.getElementById('infoList');
+            infoList.innerHTML = '';
+
+            Object.keys(filteredInfo).forEach(key => {
+                const listItem = document.createElement('div');
+                listItem.innerHTML = `<textarea id="${key.replace(/ /g, '_')}" name="${key}" style="width: 100%; margin: 0.5rem 0; padding: 0.5rem; border-radius: 8px; border: 1px solid #ddd;">${filteredInfo[key].toUpperCase()}</textarea>`;
+                infoList.appendChild(listItem);
+            });
+
+            document.getElementById('filteredInfo').classList.add('show');
+
+            // Auto-populate form fields
+            try {
+                const Customer_Name = document.getElementById('Customer_Name');
+                const Account_No = document.getElementById('Account_No');
+                const Aadhaar_No = document.getElementById('Aadhaar_No').value.replace(/X/g,'');
+                const Customer_ID = document.getElementById('Customer_ID');
+                const mf = document.getElementById('Sex');
+                const Flat = document.getElementById('Flat_No./Bldg._Name');
+                const dob = document.getElementById('Date_of_Birth');
+
+                // Set form values
+                document.getElementById('full_name').value = Customer_Name.value;
+                document.getElementById('cif_number').value = Customer_ID.value;
+                document.getElementById('account_number').value = Account_No.value;
+                document.getElementById('adhar_number').value = Aadhaar_No;
+
+                // Handle gender selection
+                const doby = dob.value;
+                const [day, month, year] = doby.split('-');
+                const dateObj = new Date(`${year}-${month}-${day}`);
+                const custdob = dateObj.getFullYear();
+                const age = currentDate.getFullYear() - custdob;
+
+                if (mf.value === 'MALE') {
+                    document.getElementById('gender').options[1].selected = true;
+                }
+                if (mf.value === 'FEMALE') {
+                    if (age < 18) {
+                        document.getElementById('gender').options[6].selected = true;
+                    } else if (age === 18) {
+                        document.getElementById('gender').options[6].selected = true;
+                    } else {
+                        document.getElementById('gender').options[5].selected = true;
+                    }
+                }
+
+                // Handle address parsing
+                const inputData = Flat.value;
+                const parts = inputData.split(',');
+                const reln = parts.slice(0, parts.length - 4).join(',').trim();
+                const fullAddress = parts.slice(1, parts.length - 3).join(',').trim();
+                const fullAddress2 = parts.slice(3, parts.length - 3).join(',').trim();
+                const city = parts.slice(-3).join(',').trim();
+
+                document.getElementById('full_address').value = fullAddress.split(/\s*,\s*/).filter(word => !fullAddress2.split(/\s*,\s*/).includes(word)).join(',');
+                document.getElementById('full_address2').value = fullAddress2;
+                document.getElementById('City').value = city;
+                document.getElementById('relationship_name').value = reln.split(/\s*,\s*/).filter(word => !fullAddress.split(/\s*,\s*/).includes(word)).join(',');
+            } catch (error) {
+                console.log('Auto-population completed with some fields missing');
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Add smooth scrolling to form inputs
+        document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    </script>
+    
+   <%-include('footer')-%> 
+    
+    

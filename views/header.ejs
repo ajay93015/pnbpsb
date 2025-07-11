@@ -1,0 +1,379 @@
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --accent-color: #4fc3f7;
+            --nav-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        /* Enhanced Navbar */
+        nav {
+            background: var(--primary-gradient);
+            box-shadow: var(--nav-shadow);
+            border-bottom: 3px solid var(--accent-color);
+            position: relative;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Animated gradient overlay */
+        nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+            animation: navShimmer 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes navShimmer {
+            0% { transform: translateX(-98vw); }
+            50% { transform: translateX(0); }
+            100% { transform: translateX(-98vw); }
+        }
+
+        .nav-wrapper {
+            padding: 0 25px;
+            position: relative;
+            z-index: 2;
+            height: 70px;
+           
+            align-items: center;
+        }
+
+        /* Brand Logo Styling */
+        .brand-logo {
+            font-weight: 700;
+            font-size: 1.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .brand-logo:hover {
+            color: var(--accent-color) !important;
+            transform: scale(1.05);
+        }
+
+        .brand-logo i {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            animation: logoPulse 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(79, 195, 247, 0.5));
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 10px rgba(79, 195, 247, 0.5));
+            }
+            50% { 
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 15px rgba(79, 195, 247, 0.8));
+            }
+        }
+
+        /* Navigation Links */
+        nav ul li a {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 10px 18px !important;
+            border-radius: 25px;
+            margin: 0 5px;
+            overflow: hidden;
+        }
+
+        /* Hover effect for nav links */
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        nav ul li a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        nav ul li a:hover::before {
+            left: 0;
+        }
+
+        /* Button Styling */
+        nav ul li a.btn {
+            background: var(--secondary-gradient);
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-weight: 600;
+            text-transform: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav ul li a.btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        nav ul li a.btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        nav ul li a.btn:hover::after {
+            width: 100px;
+            height: 100px;
+        }
+
+        /* User Display Styling */
+        nav ul li a[style*="display:block"] {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid var(--accent-color);
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--accent-color) !important;
+            animation: userGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes userGlow {
+            0%, 100% { 
+                box-shadow: 0 0 10px rgba(79, 195, 247, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 20px rgba(79, 195, 247, 0.6);
+            }
+        }
+
+        /* Mobile Menu Toggle */
+        .sidenav-trigger {
+            color: white !important;
+            font-size: 1.5rem;
+            padding: 10px !important;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .sidenav-trigger:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        /* Side Navigation Styling */
+        .sidenav {
+            background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+            backdrop-filter: blur(15px);
+            border-right: 4px solid var(--accent-color);
+            box-shadow: 5px 0 20px rgba(0,0,0,0.1);
+        }
+
+        .sidenav li a {
+            color: #2c3e50 !important;
+            font-weight: 500;
+            border-radius: 12px;
+            margin: 8px 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidenav li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-gradient);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .sidenav li a:hover {
+            color: white !important;
+            transform: translateX(10px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .sidenav li a:hover::before {
+            left: 0;
+        }
+
+        .sidenav li a.btn {
+            background: var(--secondary-gradient);
+            color: white !important;
+            text-align: center;
+            margin: 15px;
+            font-weight: 600;
+        }
+
+        .sidenav li a.btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .nav-wrapper {
+                padding: 0 15px;
+            }
+            
+            .brand-logo {
+                font-size: 1.6rem;
+            }
+            
+            .brand-logo i {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-wrapper {
+                height: 60px;
+            }
+            
+            .brand-logo {
+                font-size: 1.4rem;
+            }
+            
+            .brand-logo i {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Content area styling for demo */
+        .main-content {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .welcome-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">
+            <i class="fas fa-wallet"></i>Passbook
+        </a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+            <i class="material-icons">menu</i>
+        </a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/">Home</a></li>
+            <li><a href="/">Add Passbook</a></li>
+            <li><a href="/passbook">Search Passbook</a></li>
+            <li><a href="/adhar">Adhar</a></li>
+          
+            <%if (typeof user !== 'undefined') {%> 
+            <li><a href="/agent">Agent</a></li> 
+            <li style="display:block;"><a><%=user%></a></li>
+            <li><a class="btn" href="/logout">Logout</a></li>
+            <%if(user === '9691546129' ){%>
+            <li><a href="/regaj" class="waves-effect waves-light btn">Sign Up</a></li>
+            <%}%>
+            <%}else{%> 
+            <li><a href="/login" class="waves-effect waves-light btn">Log In</a></li>
+            <%}%>
+        </ul>
+    </div>
+</nav>
+
+<!-- Side Navbar for Mobile -->
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Home</a></li>
+    <li><a href="/">Add Passbook</a></li>
+    <li><a href="/passbook">Search Passbook</a></li>
+    <li><a href="/adhar">Adhar</a></li>
+    <li><a href="/#pan-card">PAN Card</a></li>
+    
+    <%if (typeof user !== 'undefined') {%> 
+    <li style="display:block;"><a><%=user%></a></li>
+    <li><a class="btn" href="/logout">Logout</a></li>
+    <%if(user === '9691546129' ){%>
+    <li><a href="/regaj" class="waves-effect waves-light btn">Sign Up</a></li>
+    <%}%>
+    <%}else{%> 
+    <li><a href="/login" class="waves-effect waves-light btn">Log In</a></li>
+    <%}%>
+</ul>
+
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    // Initialize Materialize components
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems);
+    });
+</script>

@@ -1,0 +1,175 @@
+<%-include('header')-%>
+      <title>Search Passbook To Print</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 30vh;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            text-decoration: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+  <h1>Search Passbook To Print </h1> <h3> press <b>d</b> keyboard key to go fast down</h3>
+    <div style="padding: 0; background-color: black; color: white; padding: 10px; text-align: center;">
+        Search By Name - <input type="text" id="searchInput" style="width: 30%; background-color: #646464; padding-left: 5px; min-width: 300px; color: White;" placeholder="Search by name...">
+    </div>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Acopen</th>
+                <th>Full Name</th>
+                <th>CIF Number</th>
+                <th>Account Number</th>
+                <th>Adhar Number</th>
+                <th>Print</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach(function(row, index) { %>
+            <% if (typeof row !== 'undefined') { %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td><%= row.acopen %></td>
+                <td><%= row.gender %> <%= row.full_name.toUpperCase() %></td>
+                <td><%= row.cif_number %></td>
+                <td><%= row.account_number %></td>
+                <td><%= row.adhar_number %></td>
+                <td><a href="/passbook/<%= row.account_number %>" target="#about_blank" class="btn-primary">Print</a></td>
+                <td><a href="/update/<%= row.account_number %>" target="#about_blank" class="btn-primary">Edit/Update</a></td>
+            </tr>
+            <% } else { %>
+            <td style="text-align: center;" colspan="7"><strong>No Data Found</strong></td>
+            <% } %>
+            <% }); %>
+              
+              <%if(user === '9301751642' ){%>
+  
+    
+   
+<% ro.forEach(function(row, index) { %>
+            <% if (typeof row !== 'undefined') { %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td><%= row.acopen %></td>
+                <td><%= row.gender %> <%= row.full_name.toUpperCase() %></td>
+                <td><%= row.cif_number %></td>
+                <td><%= row.account_number %></td>
+                <td><%= row.adhar_number %></td>
+                <td><%= row.username %></td>
+                <td><a href="/passbook/<%= row.account_number %>" target="#about_blank" class="btn-primary">Print</a></td>
+                <td><a href="/update/<%= row.account_number %>" target="#about_blank" class="btn-primary">Edit/Update</a></td>
+            </tr>
+            <% } else { %>
+            <td style="text-align: center;" colspan="7"><strong>No Data Found</strong></td>
+            <% } %>
+            <% }); %>
+<%}%>
+        </tbody>
+    </table>
+              
+<style> 
+#mob {
+display:none;
+}
+
+@media only screen and (max-width: 768px) {
+#dataTable {
+display:none;
+}
+#mob {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+#mob > div{
+margin:10px;
+padding-bottom:10px !important;
+}
+}
+</style>
+	<div id="mob">
+	
+	<% data.forEach(function(row, index) { %>
+            <% if (typeof row !== 'undefined') { %>
+            <tr>
+			<div style="box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;border-radius:5px;padding:3px;text-align:center;">
+        <b>Serial:</b>  <%= index + 1 %></br>
+        <b>Issue:</b>  <%= row.acopen %></br>
+        <b>Name:</b> <%= row.gender %> <%= row.full_name.toUpperCase() %></br>
+        <b>Cif:</b>   <%= row.cif_number %></br>
+        <b>Account:</b>   <%= row.account_number %></br>
+        <b>Uid :</b>   <%= row.adhar_number %></br></br>
+          <a href="/passbook/<%= row.account_number %>" target="#about_blank" class="btn-primary">Print</a></br></br>
+        <a href="/update/<%= row.account_number %>" target="#about_blank" class="btn-primary">Edit/Update</a></br>
+				
+            </div>
+            <% } else { %>
+			<div style="box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;border-radius:5px;">
+            <strong>No Data Found</strong></div>
+            <% } %>
+            <% }); %>
+	
+	</div>
+    <script>
+        // Get the input field and table
+        var input = document.getElementById("searchInput");
+        var table = document.getElementById("dataTable");
+
+        // Add event listener for keyup event on the input field
+        input.addEventListener("keyup", function() {
+            // Get the filter value (user input)
+            var filter = input.value.toUpperCase();
+            
+            // Get the rows of the table
+            var rows = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those that don't match the search query
+            for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+                var fullNameCell = rows[i].getElementsByTagName("td")[2]; // Get the cell containing the full name
+                if (fullNameCell) {
+                    var fullName = fullNameCell.textContent || fullNameCell.innerText; // Get the full name text
+                    if (fullName.toUpperCase().indexOf(filter) > -1) { // Check if the full name matches the filter
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        });
+    </script>
+    <script>
+        // Add an event listener for keypress
+        document.addEventListener('keydown', function(event) {
+            // Check if the pressed key is "D" (case-insensitive)
+            if (event.key.toLowerCase() === 'd') {
+                // Scroll the page down by 100% of the viewport height
+                window.scrollBy({
+                    top: 1000*100,
+                    behavior: 'smooth' // Smooth scrolling
+                });
+            }
+        });
+    </script>
+<%-include('footer')-%> 
