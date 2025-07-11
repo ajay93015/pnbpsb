@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "A simple Node app built on fastify, instantly up and running. Built to be remixed on Glitch.com.",
   "main": "server.js",
+  "type":"commonJs",
   "scripts": {
     "start": "node server.js"
   },
