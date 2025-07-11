@@ -44,7 +44,7 @@ const octokit = new Octokit({
 */
 const owner = "ajay93015";
 const repo = "mysite";
-const path = "data.json";
+//const path = "data.json";
 const branch = "main";
 
 
