@@ -161,6 +161,18 @@ user:user
 })
 
 
+const sites = [
+  "https://pnbpsb.onrender.com"
+];
+// Ping every 4 minutes (less than Glitch's 5-minute sleep)
+setInterval(() => {
+  sites.forEach(site => {
+    axios.get(site)
+       
+      //.catch(err => console.log(`❌ Error pinging ${site}:`, err.message));
+  });
+}, 49000); // every 4 minutes
+
 
 app.post('/payee',(req,res,next)=>{
   const {address,Quantity,mobile} = req.body;
