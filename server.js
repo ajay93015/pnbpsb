@@ -209,6 +209,106 @@ db.all(`SELECT * FROM acopen WHERE username = ?`,[req.session.userId],(err, rows
 }
 })
 
+const paybydb = new sqlite3.Database('./paydb.db', (err) => {
+    if (err) {
+        console.error('Error opening database:', err.message);
+    } else {
+        console.log('Connected to SQLite database');
+        // Create table if not exists
+        paybydb.run(`CREATE TABLE IF NOT EXISTS messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            message TEXT NOT NULL,
+            amount REAL,
+            txnid TEXT,
+            user TEXT DEFAULT '',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`);
+    }
+});
+
+// Routes
+// GET /payment - Show QR and UTR input form
+app.get('/payment', (req, res) => {
+    res.render('payment');
+});
+
+// POST /payment - Receive payment message
+app.post('/payment', (req, res) => {
+    const { message } = req.body;
+    
+    if (!message) {
+        return res.status(400).json({ error: 'Message is required' });
+    }
+
+    // Extract amount and txnid from message
+    const amountMatch = message.match(/Rs\.(\d+(?:\.\d{2})?)/);
+    const txnidMatch = message.match(/Txn ID:\s*(\w+)/);
+    
+    const amount = amountMatch ? parseFloat(amountMatch[1]) : null;
+    const txnid = txnidMatch ? txnidMatch[1] : null;
+
+    // Insert into database
+    paybydb.run(
+        `INSERT INTO messages (message, amount, txnid) VALUES (?, ?, ?)`,
+        [message, amount, txnid],
+        function(err) {
+            if (err) {
+                console.error('Database error:', err.message);
+                return res.status(500).json({ error: 'Database error' });
+            }
+            
+            console.log('Message stored with ID:', this.lastID);
+            res.json({ 
+                success: true, 
+                id: this.lastID,
+                amount: amount,
+                txnid: txnid
+            });
+        }
+    );
+});
+
+// POST /verify - Verify UTR and update user
+app.post('/verify', (req, res) => {
+    const { utr, user } = req.body;
+    
+    if (!utr) {
+        return res.json({  success: false, message: 'UTR is required' });
+    }
+
+    // Find message by txnid and update user
+    paybydb.run(
+        `UPDATE messages SET user = ? WHERE txnid = ? AND user = ''`,
+        [user || '', utr],
+        function(err) {
+            if (err) {
+                console.error('Database error:', err.message);
+                return res.status(500).json({ error: 'Database error' });
+            }
+            
+            if (this.changes === 0) {
+                return res.json({ success: false, message: 'UTR not found Or Alerady Updated' });
+            }
+            
+            res.json({ 
+                success: true, 
+                message: 'Verification successful',
+                updated: this.changes
+            });
+        }
+    );
+});
+
+// GET /messages - View all messages (optional for testing)
+app.get('/messages', (req, res) => {
+    paybydb.all(`SELECT * FROM messages ORDER BY created_at DESC`, (err, rows) => {
+        if (err) {
+            console.error('Database error:', err.message);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        res.render('messages', { messages: rows });
+    });
+});
 
 app.post('/process',(req,res)=>{
   //var ajay = req.session.userId;
