@@ -246,10 +246,10 @@ app.get('/payment', (req, res) => {
 
 // POST /payment - Receive payment message
 app.post('/payment', (req, res) => {
-	consol.log(req.body.message);
+	console.log(req.body.message);
     const { message } = req.body;
 	
-	consol.log(message);
+	console.log(message);
     
     if (!message) {
         return res.status(400).json({ error: 'Message is required' });
